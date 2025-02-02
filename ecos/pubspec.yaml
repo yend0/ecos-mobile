@@ -25,10 +25,27 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/icons/
     - .env
   #-------------------------- LOCAL FONTS --------------------------#
-  # fonts:
-  #   - family:
-  #     fonts:
-  #       - asset:
-  #       - weight:
+  fonts:
+     - family: Outfit
+       fonts:
+         - asset: assets/fonts/Outfit/static/Outfit-Thin.ttf
+         - weight: 100
+         - asset: assets/fonts/Outfit/static/Outfit-ExtraLight.ttf
+         - weight: 200
+         - asset: assets/fonts/Outfit/static/Outfit-Light.ttf
+         - weight: 300
+         - asset: assets/fonts/Outfit/static/Outfit-Regular.ttf
+         - weight: 400
+         - asset: assets/fonts/Outfit/static/Outfit-Medium.ttf
+         - weight: 500
+         - asset: assets/fonts/Outfit/static/Outfit-SemiBold.ttf
+         - weight: 600
+         - asset: assets/fonts/Outfit/static/Outfit-Bold.ttf
+         - weight: 700
+         - asset: assets/fonts/Outfit/static/Outfit-ExtraBold.ttf
+         - weight: 800
+         - asset: assets/fonts/Outfit/static/Outfit-Black.ttf
+         - weight: 900
