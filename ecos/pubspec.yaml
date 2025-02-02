@@ -1,7 +1,7 @@
 ---
 #-------------------------- BASE INFORMATION --------------------------#
 name: ecos
-description: ""
+description: "Mobile application for the Ecos system "
 
 publish_to: "none"
 version: 1.0.0+1
