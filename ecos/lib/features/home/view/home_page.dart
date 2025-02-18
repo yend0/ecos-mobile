@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecos/features/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         title: Text(
-          '${LocaleKeys.title_hello} Вадим',
+          '${LocaleKeys.title_hello.tr()} Вадим',
           style: theme.textTheme.titleLarge,
         ),
       ),
@@ -52,13 +53,14 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     FeatureCard(
-                      text: LocaleKeys.feature_card_description_find_bucket,
+                      text:
+                          LocaleKeys.feature_card_description_find_bucket.tr(),
                       onTap: () => {},
                       icon: Icons.pin_drop,
                     ),
                     SizedBox(width: 16.0),
                     FeatureCard(
-                      text: LocaleKeys.feature_card_description_add_bucket,
+                      text: LocaleKeys.feature_card_description_add_bucket.tr(),
                       onTap: () => {},
                       icon: Icons.public,
                     ),
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 16.0),
                 TitleDescription(
-                  text: LocaleKeys.title_description_last_contribution,
+                  text: LocaleKeys.title_description_last_contribution.tr(),
                   textStyle: TextStyle(
                     fontFamily: 'Outfit',
                     fontSize: 20.0,

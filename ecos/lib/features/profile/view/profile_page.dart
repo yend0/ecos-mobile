@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -14,18 +15,18 @@ class ProfilePage extends StatelessWidget {
 
   static List<ClickItem> settings = [
     ClickItem(
-      title: LocaleKeys.buttons_account,
+      title: LocaleKeys.buttons_account.tr(),
       path: '/profile/account',
     ),
     ClickItem(
-      title: LocaleKeys.buttons_languages,
+      title: LocaleKeys.buttons_languages.tr(),
       path: '/profile',
     ),
   ];
 
   static List<ClickItem> helps = [
     ClickItem(
-      title: LocaleKeys.buttons_faq,
+      title: LocaleKeys.buttons_faq.tr(),
       path: '/profile',
     ),
   ];
@@ -62,13 +63,14 @@ class ProfilePage extends StatelessWidget {
               child: Row(
                 children: [
                   FeatureCard(
-                    text: LocaleKeys.feature_card_description_history,
+                    text: LocaleKeys.feature_card_description_history.tr(),
                     onTap: () => context.go('/profile/history'),
                     svgAsset: _historyIcon,
                   ),
                   SizedBox(width: 16.0),
                   FeatureCard(
-                    text: LocaleKeys.feature_card_description_knowledge_base,
+                    text:
+                        LocaleKeys.feature_card_description_knowledge_base.tr(),
                     onTap: () => context.go('/profile/knowledge-base'),
                     icon: Icons.compost,
                   ),
@@ -80,7 +82,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: TitleDescription(
-                text: LocaleKeys.title_description_settings,
+                text: LocaleKeys.title_description_settings.tr(),
                 textStyle: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 20.0,
@@ -102,7 +104,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: TitleDescription(
-                text: LocaleKeys.title_description_help,
+                text: LocaleKeys.title_description_help.tr(),
                 textStyle: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 20.0,

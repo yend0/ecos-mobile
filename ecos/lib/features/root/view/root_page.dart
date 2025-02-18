@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,7 +54,7 @@ class RootPage extends StatelessWidget {
             width: 24,
             colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
           ),
-          label: LocaleKeys.root_label_home,
+          label: LocaleKeys.root_label_home.tr(),
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -65,7 +66,7 @@ class RootPage extends StatelessWidget {
             Icons.recycling_rounded,
             size: 24,
           ),
-          label: LocaleKeys.root_label_recycle,
+          label: LocaleKeys.root_label_recycle.tr(),
         ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
@@ -80,7 +81,7 @@ class RootPage extends StatelessWidget {
             width: 24,
             colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
           ),
-          label: LocaleKeys.root_label_profile,
+          label: LocaleKeys.root_label_profile.tr(),
         ),
       ];
 }

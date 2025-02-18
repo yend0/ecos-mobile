@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,7 @@ class HistoryPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           TitleAppBar(
-            text: LocaleKeys.feature_card_description_history,
+            text: LocaleKeys.feature_card_description_history.tr(),
             onPressed: () => context.go('/profile'),
           ),
           SliverToBoxAdapter(

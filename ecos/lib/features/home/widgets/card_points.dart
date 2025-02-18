@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecos/generated/generated.dart';
@@ -34,7 +35,7 @@ class CardPoints extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                LocaleKeys.title_card,
+                LocaleKeys.title_card.tr(),
                 style: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 18,
@@ -59,7 +60,7 @@ class CardPoints extends StatelessWidget {
                     baseline: 52,
                     baselineType: TextBaseline.alphabetic,
                     child: Text(
-                      LocaleKeys.points,
+                      LocaleKeys.points.tr(),
                       style: TextStyle(
                         fontFamily: 'Outfit',
                         fontSize: 16,
