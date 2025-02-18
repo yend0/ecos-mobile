@@ -1,0 +1,26 @@
+{
+    "title_hello": "Hey!",
+    "title_card": "Points earned",
+    "feature_card_description": {
+        "find_bucket": "Find a bin",
+        "add_bucket": "Add bin",
+        "history": "History",
+        "knowledge_base": "Knowledge base"
+    },
+    "title_description": {
+        "last_contribution": "Last deposit",
+        "settings": "Settings",
+        "help": "Help and support"
+    },
+    "root_label": {
+        "home": "Home",
+        "recycle": "Recycling",
+        "profile": "Profile"
+    },
+    "buttons": {
+        "account": "Your account",
+        "languages": "Languages",
+        "faq": "FAQ"
+    },
+    "points": "points"
+}

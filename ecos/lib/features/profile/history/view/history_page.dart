@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import 'package:ecos/ui/ui.dart';
 import 'package:ecos/features/profile/profile.dart';
-import 'package:go_router/go_router.dart';
+
+import 'package:ecos/generated/generated.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -13,7 +16,7 @@ class HistoryPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           TitleAppBar(
-            text: 'История',
+            text: LocaleKeys.feature_card_description_history,
             onPressed: () => context.go('/profile'),
           ),
           SliverToBoxAdapter(

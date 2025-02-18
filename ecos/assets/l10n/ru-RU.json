@@ -1,0 +1,26 @@
+{
+    "title_hello": "Привет!",
+    "title_card": "Заработанные баллы",
+    "feature_card_description": {
+        "find_bucket": "Найти пункт",
+        "add_bucket": "Добавить пункт",
+        "history": "История",
+        "knowledge_base": "База знаний"
+    },
+    "title_description": {
+        "last_contribution": "Последний вклад",
+        "settings": "Настройки",
+        "help": "Помощь и поддержка"
+    },
+    "root_label": {
+        "home": "Главная",
+        "recycle": "Переработка",
+        "profile": "Профиль"
+    },
+    "buttons": {
+        "account": "Ваша учетная запись",
+        "languages": "Языки",
+        "faq": "FAQ"
+    },
+    "points": "бал."
+}

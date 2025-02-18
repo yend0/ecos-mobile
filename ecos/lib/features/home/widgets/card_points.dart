@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:ecos/generated/generated.dart';
+
 class CardPoints extends StatelessWidget {
   const CardPoints({
     super.key,
@@ -32,7 +34,7 @@ class CardPoints extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Заработанные баллы',
+                LocaleKeys.title_card,
                 style: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 18,
@@ -57,7 +59,7 @@ class CardPoints extends StatelessWidget {
                     baseline: 52,
                     baselineType: TextBaseline.alphabetic,
                     child: Text(
-                      'бал.',
+                      LocaleKeys.points,
                       style: TextStyle(
                         fontFamily: 'Outfit',
                         fontSize: 16,

@@ -1,8 +1,11 @@
-import 'package:ecos/ui/ui.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ecos/features/profile/profile.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:ecos/ui/ui.dart';
+import 'package:ecos/features/profile/profile.dart';
+
+import 'package:ecos/generated/generated.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -11,18 +14,18 @@ class ProfilePage extends StatelessWidget {
 
   static List<ClickItem> settings = [
     ClickItem(
-      title: 'Ваша учетная запись',
+      title: LocaleKeys.buttons_account,
       path: '/profile/account',
     ),
     ClickItem(
-      title: 'Языки',
+      title: LocaleKeys.buttons_languages,
       path: '/profile',
     ),
   ];
 
   static List<ClickItem> helps = [
     ClickItem(
-      title: 'FAQ',
+      title: LocaleKeys.buttons_faq,
       path: '/profile',
     ),
   ];
@@ -59,13 +62,13 @@ class ProfilePage extends StatelessWidget {
               child: Row(
                 children: [
                   FeatureCard(
-                    text: 'История',
+                    text: LocaleKeys.feature_card_description_history,
                     onTap: () => context.go('/profile/history'),
                     svgAsset: _historyIcon,
                   ),
                   SizedBox(width: 16.0),
                   FeatureCard(
-                    text: 'База знаний',
+                    text: LocaleKeys.feature_card_description_knowledge_base,
                     onTap: () => context.go('/profile/knowledge-base'),
                     icon: Icons.compost,
                   ),
@@ -77,7 +80,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: TitleDescription(
-                text: 'Настройки',
+                text: LocaleKeys.title_description_settings,
                 textStyle: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 20.0,
@@ -99,7 +102,7 @@ class ProfilePage extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: TitleDescription(
-                text: 'Помощь и поддержка',
+                text: LocaleKeys.title_description_help,
                 textStyle: TextStyle(
                   fontFamily: 'Outfit',
                   fontSize: 20.0,

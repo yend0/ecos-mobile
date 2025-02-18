@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:ecos/generated/generated.dart';
+
 class RootPage extends StatelessWidget {
   const RootPage({
     super.key,
@@ -51,7 +53,7 @@ class RootPage extends StatelessWidget {
             width: 24,
             colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
           ),
-          label: 'Главная',
+          label: LocaleKeys.root_label_home,
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -63,7 +65,7 @@ class RootPage extends StatelessWidget {
             Icons.recycling_rounded,
             size: 24,
           ),
-          label: 'Переработка',
+          label: LocaleKeys.root_label_recycle,
         ),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
@@ -78,7 +80,7 @@ class RootPage extends StatelessWidget {
             width: 24,
             colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
           ),
-          label: 'Профиль',
+          label: LocaleKeys.root_label_profile,
         ),
       ];
 }

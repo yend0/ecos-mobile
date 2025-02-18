@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:ecos/ui/ui.dart';
 
+import 'package:ecos/generated/generated.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -29,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         title: Text(
-          'Привет! Вадим',
+          '${LocaleKeys.title_hello} Вадим',
           style: theme.textTheme.titleLarge,
         ),
       ),
@@ -50,13 +52,13 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     FeatureCard(
-                      text: 'Найти пункт',
+                      text: LocaleKeys.feature_card_description_find_bucket,
                       onTap: () => {},
                       icon: Icons.pin_drop,
                     ),
                     SizedBox(width: 16.0),
                     FeatureCard(
-                      text: 'Добавить пункт',
+                      text: LocaleKeys.feature_card_description_add_bucket,
                       onTap: () => {},
                       icon: Icons.public,
                     ),
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 16.0),
                 TitleDescription(
-                  text: 'Последний вклад',
+                  text: LocaleKeys.title_description_last_contribution,
                   textStyle: TextStyle(
                     fontFamily: 'Outfit',
                     fontSize: 20.0,

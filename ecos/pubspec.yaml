@@ -43,7 +43,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icons/
-    - assets/translations/
+    - assets/l10n/
     - .env
   #-------------------------- LOCAL FONTS --------------------------#
   fonts:
