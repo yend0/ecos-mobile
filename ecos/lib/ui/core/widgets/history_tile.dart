@@ -26,10 +26,10 @@ class HistoryTile extends StatelessWidget {
         style: theme.textTheme.bodyMedium,
       ),
       trailing: Text(
-        '$points бал.',
+        '+$points бал.',
         style: TextStyle(
           fontFamily: 'Outfit',
-          color: Colors.green,
+          color: const Color(0xFF25884F),
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),

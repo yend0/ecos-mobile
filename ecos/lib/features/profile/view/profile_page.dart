@@ -13,17 +13,6 @@ class ProfilePage extends StatelessWidget {
 
   static const String _historyIcon = 'assets/icons/ic_history.svg';
 
-  static List<ClickItem> settings = [
-    ClickItem(
-      title: LocaleKeys.buttons_account.tr(),
-      path: '/profile/account',
-    ),
-    ClickItem(
-      title: LocaleKeys.buttons_languages.tr(),
-      path: '/profile/localization',
-    ),
-  ];
-
   static List<ClickItem> helps = [
     ClickItem(
       title: LocaleKeys.buttons_faq.tr(),
@@ -33,6 +22,16 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ClickItem> settings = [
+      ClickItem(
+        title: LocaleKeys.buttons_account.tr(),
+        path: '/profile/account',
+      ),
+      ClickItem(
+        title: LocaleKeys.buttons_languages.tr(),
+        path: '/profile/localization',
+      ),
+    ];
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
