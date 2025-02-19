@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     ),
     ClickItem(
       title: LocaleKeys.buttons_languages.tr(),
-      path: '/profile',
+      path: '/profile/localization',
     ),
   ];
 

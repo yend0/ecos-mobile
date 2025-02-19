@@ -1,3 +1,4 @@
+import 'package:ecos/features/profile/localization/view/localization_page.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecos/features/home/home.dart';
@@ -38,6 +39,10 @@ final router = GoRouter(
                 GoRoute(
                   path: 'account',
                   builder: (context, state) => const AccountPage(),
+                ),
+                GoRoute(
+                  path: 'localization',
+                  builder: (context, state) => const LocalizationPage(),
                 ),
                 GoRoute(
                   path: 'history',
