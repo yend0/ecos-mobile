@@ -25,7 +25,7 @@ class _LocalizationPageState extends State<LocalizationPage> {
       body: CustomScrollView(
         slivers: [
           TitleAppBar(
-            text: LocaleKeys.buttons_languages.tr(),
+            text: LocaleKeys.buttons_route_languages.tr(),
             onPressed: () => context.go('/profile'),
           ),
           SliverToBoxAdapter(

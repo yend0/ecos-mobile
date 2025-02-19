@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
 
   static List<ClickItem> helps = [
     ClickItem(
-      title: LocaleKeys.buttons_faq.tr(),
+      title: LocaleKeys.buttons_route_faq.tr(),
       path: '/profile',
     ),
   ];
@@ -24,11 +24,11 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ClickItem> settings = [
       ClickItem(
-        title: LocaleKeys.buttons_account.tr(),
+        title: LocaleKeys.buttons_route_account.tr(),
         path: '/profile/account',
       ),
       ClickItem(
-        title: LocaleKeys.buttons_languages.tr(),
+        title: LocaleKeys.buttons_route_languages.tr(),
         path: '/profile/localization',
       ),
     ];

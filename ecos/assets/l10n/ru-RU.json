@@ -10,17 +10,30 @@
     "title_description": {
         "last_contribution": "Последний вклад",
         "settings": "Настройки",
-        "help": "Помощь и поддержка"
+        "help": "Помощь и поддержка",
+        "full_name": "ФИО",
+        "email": "Электронная почта",
+        "birth_date": "Дата рождения"
     },
     "root_label": {
         "home": "Главная",
         "recycle": "Переработка",
         "profile": "Профиль"
     },
-    "buttons": {
+    "buttons_route": {
         "account": "Ваша учетная запись",
         "languages": "Языки",
         "faq": "FAQ"
+    },
+    "buttons_action": {
+        "change_image": "Изменить изображение"
+    },
+    "validations": {
+        "full_name_validation_error_invalid": "Пожалуйста, убедитесь, что указанное полное имя является действительным",
+        "full_name_validation_error_empty": "Пожалуйста, введите полное имя",
+        "birth_date_validation_error_invalid": "Пожалуйста, убедитесь, что указанная дата рождения действительна",
+        "birth_date_validation_error_empty": "Пожалуйста, укажите дату рождения",
+        "birth_date_validation_error_invalidFormat": "Пожалуйста, убедитесь, что указанная дата рождения соответствует \"XX/XX/20XX\""
     },
     "points": "бал."
 }

@@ -122,5 +122,10 @@ class LightTheme {
     radioTheme: RadioThemeData(
       fillColor: WidgetStateProperty.all(_secondaryColor),
     ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: _secondaryColor,
+      selectionColor: _backgroundColor,
+      selectionHandleColor: _secondaryColor,
+    ),
   );
 }
