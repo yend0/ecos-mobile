@@ -52,17 +52,22 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 16.0),
                 Row(
                   children: [
-                    FeatureCard(
-                      text:
-                          LocaleKeys.feature_card_description_find_bucket.tr(),
-                      onTap: () => {},
-                      icon: Icons.pin_drop,
+                    Expanded(
+                      child: FeatureCard(
+                        text: LocaleKeys.feature_card_description_find_bucket
+                            .tr(),
+                        onTap: () => {},
+                        icon: Icons.pin_drop,
+                      ),
                     ),
                     SizedBox(width: 16.0),
-                    FeatureCard(
-                      text: LocaleKeys.feature_card_description_add_bucket.tr(),
-                      onTap: () => {},
-                      icon: Icons.public,
+                    Expanded(
+                      child: FeatureCard(
+                        text:
+                            LocaleKeys.feature_card_description_add_bucket.tr(),
+                        onTap: () => {},
+                        icon: Icons.public,
+                      ),
                     ),
                   ],
                 ),

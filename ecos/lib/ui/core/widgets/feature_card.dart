@@ -17,7 +17,7 @@ class FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16.0),

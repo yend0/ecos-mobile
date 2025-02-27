@@ -61,17 +61,21 @@ class ProfilePage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Row(
                 children: [
-                  FeatureCard(
-                    text: LocaleKeys.feature_card_description_history.tr(),
-                    onTap: () => context.go('/profile/history'),
-                    svgAsset: _historyIcon,
+                  Expanded(
+                    child: FeatureCard(
+                      text: LocaleKeys.feature_card_description_history.tr(),
+                      onTap: () => context.go('/profile/history'),
+                      svgAsset: _historyIcon,
+                    ),
                   ),
                   SizedBox(width: 16.0),
-                  FeatureCard(
-                    text:
-                        LocaleKeys.feature_card_description_knowledge_base.tr(),
-                    onTap: () => context.go('/profile/knowledge-base'),
-                    icon: Icons.compost,
+                  Expanded(
+                    child: FeatureCard(
+                      text: LocaleKeys.feature_card_description_knowledge_base
+                          .tr(),
+                      onTap: () => context.go('/profile/knowledge-base'),
+                      icon: Icons.compost,
+                    ),
                   ),
                 ],
               ),
