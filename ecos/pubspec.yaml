@@ -26,6 +26,7 @@ dependencies:
   # Buissnes logic
   flutter_bloc: ^9.0.0
   equatable: ^2.0.7
+  meta: ^1.15.0
 
   # Network
   retrofit: ^4.4.2
