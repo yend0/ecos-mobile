@@ -5,7 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecos/features/profile/profile.dart';
-
+import 'package:ecos/router/router.dart';
 import 'package:ecos/generated/generated.dart';
 
 class LocalizationPage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _LocalizationPageState extends State<LocalizationPage> {
         slivers: [
           TitleAppBar(
             text: LocaleKeys.buttons_route_languages.tr(),
-            onPressed: () => context.go('/profile'),
+            onPressed: () => context.go(PAGES.profile.screenPath),
           ),
           SliverToBoxAdapter(
             child: Column(
