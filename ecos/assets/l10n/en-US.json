@@ -1,0 +1,39 @@
+{
+    "title_hello": "Hey!",
+    "title_card": "Points earned",
+    "feature_card_description": {
+        "find_bucket": "Find a bin",
+        "add_bucket": "Add bin",
+        "history": "History",
+        "knowledge_base": "Knowledge base"
+    },
+    "title_description": {
+        "last_contribution": "Last deposit",
+        "settings": "Settings",
+        "help": "Help and support",
+        "full_name": "Full name",
+        "email": "Email",
+        "birth_date": "Birth date"
+    },
+    "root_label": {
+        "home": "Home",
+        "recycle": "Recycling",
+        "profile": "Profile"
+    },
+    "buttons_route": {
+        "account": "Your account",
+        "languages": "Languages",
+        "faq": "FAQ"
+    },
+    "buttons_action": {
+        "change_image": "Change image"
+    },
+    "validations": {
+        "full_name_validation_error_invalid": "Please make sure that the specified full name is valid",
+        "full_name_validation_error_empty": "Please enter a full name",
+        "birth_date_validation_error_invalid": "Please make sure that the specified date of birth is valid",
+        "birth_date_validation_error_empty": "Please enter an date of birth",
+        "birth_date_validation_error_invalidFormat": "Please make sure that the specified date of birth corresponds to \"XX/XX/20XX\""
+    },
+    "points": "points"
+}
