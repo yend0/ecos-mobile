@@ -55,6 +55,26 @@ class CodegenLoader extends AssetLoader{
     "password_validation_error_invalid": "Password must be at least 8 characters and contain at least one letter and number",
     "password_validation_error_empty": "Please enter a password"
   },
+  "login_text": {
+    "login": "Sign-in",
+    "login_button": "Sign-in",
+    "success_snack_bar": "Sign-in successfully! 🎉",
+    "failure_snack_bar": "Uncorret username or password... 🚨",
+    "question_text": "Don't have an account? ",
+    "action_text": "Register",
+    "email_input": "Enter your email",
+    "password_input": "Enter your password"
+  },
+  "register_text": {
+    "register": "Sign-up",
+    "register_button": "Sign-up",
+    "success_snack_bar": "Account created successfully! 🎉",
+    "failure_snack_bar": "An error occurred while creating the account... 🚨",
+    "question_text": "Already have an account? ",
+    "action_text": "Sign-in",
+    "email_input": "Enter your email",
+    "password_input": "Enter your password"
+  },
   "points": "points"
 };
 static const Map<String,dynamic> _ru_RU = {
@@ -97,6 +117,26 @@ static const Map<String,dynamic> _ru_RU = {
     "email_validation_error_empty": "Пожалуйста, введите адрес электронной почты",
     "password_validation_error_invalid": "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву и цифру",
     "password_validation_error_empty": "Пожалуйста, введите пароль"
+  },
+  "login_text": {
+    "login": "Вход",
+    "login_button": "Войти",
+    "success_snack_bar": "Вход выполнен успешно! 🎉",
+    "failure_snack_bar": "Неверные пароль или почта... 🚨",
+    "question_text": "Нет аккаунта? ",
+    "action_text": "Зарегистрироваться",
+    "email_input": "Введите почту",
+    "password_input": "Введите пароль"
+  },
+  "register_text": {
+    "register": "Регистрация",
+    "register_button": "Зарегистрироваться",
+    "success_snack_bar": "Аккаунт успешно создан! 🎉",
+    "failure_snack_bar": "Возникла ошибка при создании аккаунта... 🚨",
+    "question_text": "Уже есть аккаунт? ",
+    "action_text": "Войти",
+    "email_input": "Введите почту",
+    "password_input": "Введите пароль"
   },
   "points": "бал."
 };

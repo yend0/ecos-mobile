@@ -37,6 +37,24 @@ abstract class  LocaleKeys {
   static const validations_password_validation_error_invalid = 'validations.password_validation_error_invalid';
   static const validations_password_validation_error_empty = 'validations.password_validation_error_empty';
   static const validations = 'validations';
+  static const login_text_login = 'login_text.login';
+  static const login_text_login_button = 'login_text.login_button';
+  static const login_text_success_snack_bar = 'login_text.success_snack_bar';
+  static const login_text_failure_snack_bar = 'login_text.failure_snack_bar';
+  static const login_text_question_text = 'login_text.question_text';
+  static const login_text_action_text = 'login_text.action_text';
+  static const login_text_email_input = 'login_text.email_input';
+  static const login_text_password_input = 'login_text.password_input';
+  static const login_text = 'login_text';
+  static const register_text_register = 'register_text.register';
+  static const register_text_register_button = 'register_text.register_button';
+  static const register_text_success_snack_bar = 'register_text.success_snack_bar';
+  static const register_text_failure_snack_bar = 'register_text.failure_snack_bar';
+  static const register_text_question_text = 'register_text.question_text';
+  static const register_text_action_text = 'register_text.action_text';
+  static const register_text_email_input = 'register_text.email_input';
+  static const register_text_password_input = 'register_text.password_input';
+  static const register_text = 'register_text';
   static const points = 'points';
 
 }
