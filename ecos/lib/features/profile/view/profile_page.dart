@@ -1,10 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecos/ui/ui.dart';
 import 'package:ecos/router/router.dart';
+import 'package:ecos/features/auth/auth.dart';
 import 'package:ecos/features/profile/profile.dart';
 
 import 'package:ecos/generated/generated.dart';
@@ -39,7 +40,18 @@ class ProfilePage extends StatelessWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 28.0),
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    LogoutIconButton(),
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 28.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,6 +141,20 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LogoutIconButton extends StatelessWidget {
+  const LogoutIconButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.logout, color: Colors.black),
+      onPressed: () {
+        context.read<AuthBloc>().add(AuthLogoutEvent());
+      },
     );
   }
 }

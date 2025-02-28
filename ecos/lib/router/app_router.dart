@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecos/router/router.dart';
@@ -9,6 +9,7 @@ import 'package:ecos/features/profile/profile.dart';
 import 'package:ecos/features/recycle/recycle.dart';
 import 'package:ecos/features/root/root.dart';
 import 'package:ecos/features/profile/localization/localization.dart';
+import 'package:ecos/features/auth/auth.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -46,6 +47,15 @@ class AppRouter {
               GoRoute(
                 path: PAGES.profile.screenPath,
                 name: PAGES.profile.screenName,
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    child: AuthGuardPage(child: const ProfilePage()),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                  );
+                },
                 builder: (context, state) => const ProfilePage(),
                 routes: [
                   GoRoute(
@@ -82,7 +92,37 @@ class AppRouter {
           ),
         ],
       ),
+      GoRoute(
+        path: PAGES.login.screenPath,
+        name: PAGES.login.screenName,
+        builder: (context, state) => const SignInPage(),
+      ),
+      GoRoute(
+        path: PAGES.register.screenPath,
+        name: PAGES.register.screenName,
+        builder: (context, state) => const SignUpPage(),
+      ),
     ],
+    redirect: (context, state) {
+      final authState = context.read<AuthBloc>().state;
+
+      if (authState is AuthInitialState) {
+        context.read<AuthBloc>().add(AuthCheckLoginInAppEvent());
+      }
+
+      final isLoggedIn = authState is AuthAuthorizedState;
+
+      final isGoingToProfile = state.fullPath == PAGES.profile.screenPath;
+      final isGoingToLogin = state.fullPath == PAGES.login.screenPath;
+
+      if (!isLoggedIn && isGoingToProfile) return PAGES.login.screenPath;
+
+      if (isLoggedIn && isGoingToProfile) return PAGES.profile.screenPath;
+
+      if (isLoggedIn && isGoingToLogin) return PAGES.home.screenPath;
+
+      return null;
+    },
     errorBuilder: (context, state) => const NotFoundPage(),
   );
 
