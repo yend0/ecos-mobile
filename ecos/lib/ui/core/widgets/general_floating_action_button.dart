@@ -5,10 +5,12 @@ class GeneralFloatingActionButton extends StatelessWidget {
     super.key,
     required this.theme,
     required this.text,
+    required this.onPressed,
   });
 
   final ThemeData theme;
   final String text;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class GeneralFloatingActionButton extends StatelessWidget {
           ),
           foregroundColor: theme.primaryColor,
           backgroundColor: Colors.black,
-          onPressed: () => {},
+          onPressed: onPressed,
         ),
       ),
     );
