@@ -33,7 +33,11 @@
         "full_name_validation_error_empty": "Пожалуйста, введите полное имя",
         "birth_date_validation_error_invalid": "Пожалуйста, убедитесь, что указанная дата рождения действительна",
         "birth_date_validation_error_empty": "Пожалуйста, укажите дату рождения",
-        "birth_date_validation_error_invalidFormat": "Пожалуйста, убедитесь, что указанная дата рождения соответствует \"XX/XX/20XX\""
+        "birth_date_validation_error_invalidFormat": "Пожалуйста, убедитесь, что указанная дата рождения соответствует \"XX/XX/20XX\"",
+        "email_validation_error_invalid": "Пожалуйста, убедитесь, что указанный адрес электронной почты валиден",
+        "email_validation_error_empty": "Пожалуйста, введите адрес электронной почты",
+        "password_validation_error_invalid": "Пароль должен быть не менее 8 символов и содержать хотя бы одну букву и цифру",
+        "password_validation_error_empty": "Пожалуйста, введите пароль"
     },
     "points": "бал."
 }

@@ -33,7 +33,11 @@
         "full_name_validation_error_empty": "Please enter a full name",
         "birth_date_validation_error_invalid": "Please make sure that the specified date of birth is valid",
         "birth_date_validation_error_empty": "Please enter an date of birth",
-        "birth_date_validation_error_invalidFormat": "Please make sure that the specified date of birth corresponds to \"XX/XX/20XX\""
+        "birth_date_validation_error_invalidFormat": "Please make sure that the specified date of birth corresponds to \"XX/XX/20XX\"",
+        "email_validation_error_invalid": "Please ensure the email entered is valid",
+        "email_validation_error_empty": "Please enter an email",
+        "password_validation_error_invalid": "Password must be at least 8 characters and contain at least one letter and number",
+        "password_validation_error_empty": "Please enter a password"
     },
     "points": "points"
 }

@@ -32,6 +32,10 @@ abstract class  LocaleKeys {
   static const validations_birth_date_validation_error_invalid = 'validations.birth_date_validation_error_invalid';
   static const validations_birth_date_validation_error_empty = 'validations.birth_date_validation_error_empty';
   static const validations_birth_date_validation_error_invalidFormat = 'validations.birth_date_validation_error_invalidFormat';
+  static const validations_email_validation_error_invalid = 'validations.email_validation_error_invalid';
+  static const validations_email_validation_error_empty = 'validations.email_validation_error_empty';
+  static const validations_password_validation_error_invalid = 'validations.password_validation_error_invalid';
+  static const validations_password_validation_error_empty = 'validations.password_validation_error_empty';
   static const validations = 'validations';
   static const points = 'points';
 
