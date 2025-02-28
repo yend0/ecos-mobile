@@ -27,7 +27,7 @@ abstract class AuthClient {
   );
 
   @FormUrlEncoded()
-  @POST('/realms/ecos/protocol/openid-connect/token/logout')
+  @POST('/realms/ecos/protocol/openid-connect/logout')
   Future<void> logout(
     @Field('client_id') String clientId,
     @Field('refresh_token') String refreshToken,
@@ -39,5 +39,10 @@ abstract class AuthClient {
     @Field('client_id') String clientId,
     @Field('grant_type') String grantType,
     @Field('refresh_token') String refreshToken,
+  );
+
+  @GET('/realms/ecos/protocol/openid-connect/userinfo')
+  Future<UserInfo> userInfo(
+    @Header('Authorization') String token,
   );
 }

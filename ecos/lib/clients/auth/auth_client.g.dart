@@ -74,7 +74,7 @@ class _AuthClient implements AuthClient {
       )
           .compose(
             _dio.options,
-            '/realms/ecos/protocol/openid-connect/token/logout',
+            '/realms/ecos/protocol/openid-connect/logout',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -116,6 +116,34 @@ class _AuthClient implements AuthClient {
     late Token _value;
     try {
       _value = Token.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<UserInfo> userInfo(String token) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<UserInfo>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/realms/ecos/protocol/openid-connect/userinfo',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UserInfo _value;
+    try {
+      _value = UserInfo.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
