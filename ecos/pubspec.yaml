@@ -22,9 +22,16 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   go_router: ^14.8.0
   easy_localization: ^3.0.7
+  talker_flutter: ^4.6.14
+
+  # Buissnes logic
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
+  meta: ^1.15.0
 
   # Network
   retrofit: ^4.4.2
+  dio: ^5.8.0+1
 
   # Icons
   flutter_svg: ^2.0.17

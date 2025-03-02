@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'package:ecos/ui/ui.dart';
+import 'package:ecos/router/router.dart';
 import 'package:ecos/features/profile/profile.dart';
 import 'package:ecos/generated/generated.dart';
 
@@ -67,7 +68,7 @@ class _AccountPageState extends State<AccountPage> {
         slivers: [
           TitleAppBar(
             text: LocaleKeys.buttons_route_account.tr(),
-            onPressed: () => context.go('/profile'),
+            onPressed: () => context.go(PAGES.profile.screenPath),
           ),
           SliverToBoxAdapter(
             child: SizedBox(

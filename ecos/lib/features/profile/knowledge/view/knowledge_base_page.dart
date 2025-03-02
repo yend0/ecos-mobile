@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:ecos/router/router.dart';
 import 'package:ecos/features/profile/profile.dart';
 import 'package:ecos/generated/generated.dart';
 
@@ -33,7 +34,7 @@ class KnowledgeBasePage extends StatelessWidget {
         slivers: [
           TitleAppBar(
             text: LocaleKeys.feature_card_description_knowledge_base.tr(),
-            onPressed: () => context.go('/profile'),
+            onPressed: () => context.go(PAGES.profile.screenPath),
           ),
           SliverToBoxAdapter(
             child: Padding(

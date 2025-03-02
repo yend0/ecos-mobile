@@ -33,7 +33,31 @@
         "full_name_validation_error_empty": "Please enter a full name",
         "birth_date_validation_error_invalid": "Please make sure that the specified date of birth is valid",
         "birth_date_validation_error_empty": "Please enter an date of birth",
-        "birth_date_validation_error_invalidFormat": "Please make sure that the specified date of birth corresponds to \"XX/XX/20XX\""
+        "birth_date_validation_error_invalidFormat": "Please make sure that the specified date of birth corresponds to \"XX/XX/20XX\"",
+        "email_validation_error_invalid": "Please ensure the email entered is valid",
+        "email_validation_error_empty": "Please enter an email",
+        "password_validation_error_invalid": "Password must be at least 8 characters and contain at least one letter and number",
+        "password_validation_error_empty": "Please enter a password"
+    },
+    "login_text": {
+        "login": "Sign-in",
+        "login_button": "Sign-in",
+        "success_snack_bar": "Sign-in successfully! 🎉",
+        "failure_snack_bar": "Uncorret username or password... 🚨",
+        "question_text": "Don't have an account? ",
+        "action_text": "Register",
+        "email_input": "Enter your email",
+        "password_input": "Enter your password"
+    },
+    "register_text": {
+        "register": "Sign-up",
+        "register_button": "Sign-up",
+        "success_snack_bar": "Account created successfully! 🎉",
+        "failure_snack_bar": "An error occurred while creating the account... 🚨",
+        "question_text": "Already have an account? ",
+        "action_text": "Sign-in",
+        "email_input": "Enter your email",
+        "password_input": "Enter your password"
     },
     "points": "points"
 }
