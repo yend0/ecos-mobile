@@ -35,6 +35,7 @@ dependencies:
 
   # Icons
   flutter_svg: ^2.0.17
+  cupertino_icons: ^1.0.8
 
 #-------------------------- DEVELOPMENT PACKAGES --------------------------#
 dev_dependencies:
