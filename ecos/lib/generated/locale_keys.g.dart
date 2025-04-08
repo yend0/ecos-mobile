@@ -41,6 +41,8 @@ abstract class  LocaleKeys {
   static const login_text_login_button = 'login_text.login_button';
   static const login_text_success_snack_bar = 'login_text.success_snack_bar';
   static const login_text_failure_snack_bar = 'login_text.failure_snack_bar';
+  static const login_text_failure_snack_bar_server_error = 'login_text.failure_snack_bar_server_error';
+  static const login_text_failure_snack_bar_password_or_email = 'login_text.failure_snack_bar_password_or_email';
   static const login_text_question_text = 'login_text.question_text';
   static const login_text_action_text = 'login_text.action_text';
   static const login_text_email_input = 'login_text.email_input';
@@ -50,6 +52,9 @@ abstract class  LocaleKeys {
   static const register_text_register_button = 'register_text.register_button';
   static const register_text_success_snack_bar = 'register_text.success_snack_bar';
   static const register_text_failure_snack_bar = 'register_text.failure_snack_bar';
+  static const register_text_failure_snack_bar_server_error = 'register_text.failure_snack_bar_server_error';
+  static const register_text_failure_snack_bar_password_or_email = 'register_text.failure_snack_bar_password_or_email';
+  static const register_text_failure_snack_bar_already_use = 'register_text.failure_snack_bar_already_use';
   static const register_text_question_text = 'register_text.question_text';
   static const register_text_action_text = 'register_text.action_text';
   static const register_text_email_input = 'register_text.email_input';

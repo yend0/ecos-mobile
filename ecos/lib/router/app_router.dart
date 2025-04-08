@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -103,19 +105,26 @@ class AppRouter {
         builder: (context, state) => const SignUpPage(),
       ),
     ],
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final authState = context.read<AuthBloc>().state;
 
       if (authState is AuthInitialState) {
-        context.read<AuthBloc>().add(AuthCheckLoginInAppEvent());
+        final complete = Completer();
+        context
+            .read<AuthBloc>()
+            .add(AuthCheckLoginInAppEvent(completer: complete));
+        await complete.future;
       }
 
       final isLoggedIn = authState is AuthAuthorizedState;
 
       final isGoingToProfile = state.fullPath == PAGES.profile.screenPath;
       final isGoingToLogin = state.fullPath == PAGES.login.screenPath;
+      final isGoingToRegister = state.fullPath == PAGES.register.screenPath;
 
       if (!isLoggedIn && isGoingToProfile) return PAGES.login.screenPath;
+
+      if (!isLoggedIn && isGoingToRegister) return PAGES.register.screenPath;
 
       if (isLoggedIn && isGoingToProfile) return PAGES.profile.screenPath;
 

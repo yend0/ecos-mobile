@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,6 +9,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:meta/meta.dart';
 
 import 'package:ecos/clients/clients.dart';
+import 'package:ecos/generated/generated.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -63,15 +66,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       final UserInfo userInfo =
-          await _authClient.userInfo('Bearer $accessToken');
+          await _authClient.userInfo(token: 'Bearer $accessToken');
 
       _logger?.debug('User info: ${userInfo.toJson()}');
-      emit(AuthAuthorizedState(
-          accessToken: accessToken, refreshToken: refreshToken));
+      emit(AuthAuthorizedState(userInfo: userInfo));
     } catch (error, stackTrace) {
-      emit(AuthFailureState(error: error));
+      String errorMessage = LocaleKeys.login_text_failure_snack_bar.tr();
+
+      if (error is DioException) {
+        if (error.response?.statusCode == 401) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_password_or_email.tr();
+        } else if (error.response?.statusCode == 500) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_server_error.tr();
+        }
+      }
+
+      emit(AuthFailureState(error: error, errorMessage: errorMessage));
       _logger?.handle(error, stackTrace);
       add(AuthRefreshEvent());
+    } finally {
+      event.completer?.complete();
     }
   }
 
@@ -86,20 +102,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthRequestState());
 
-      final token = await _authClient.login(
-        _clientId,
-        _grantTypes['password']!,
-        event.username,
-        event.password,
+      final Token token = await _authClient.login(
+        clientId: _clientId,
+        grantType: _grantTypes['password']!,
+        username: event.username,
+        password: event.password,
       );
 
       await _storage.write(key: 'access_token', value: token.access_token);
       await _storage.write(key: 'refresh_token', value: token.refresh_token);
 
-      emit(AuthAuthorizedState(
-          accessToken: token.access_token, refreshToken: token.refresh_token));
+      emit(AuthAuthorizedState());
     } catch (error, stackTrace) {
-      emit(AuthFailureState(error: error));
+      String errorMessage = LocaleKeys.login_text_failure_snack_bar.tr();
+
+      if (error is DioException) {
+        if (error.response?.statusCode == 401) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_password_or_email.tr();
+        } else if (error.response?.statusCode == 500) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_server_error.tr();
+        }
+      }
+
+      emit(AuthFailureState(error: error, errorMessage: errorMessage));
       _logger?.handle(error, stackTrace);
     } finally {
       event.completer?.complete();
@@ -120,19 +147,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthRequestState());
 
-      final token = await _authClient.refresh(
-        _clientId,
-        _grantTypes['refresh_token']!,
-        refreshToken,
+      final Token token = await _authClient.refresh(
+        clientId: _clientId,
+        grantType: _grantTypes['refresh_token']!,
+        refreshToken: refreshToken,
       );
 
       await _storage.write(key: 'access_token', value: token.access_token);
       await _storage.write(key: 'refresh_token', value: token.refresh_token);
 
-      emit(AuthAuthorizedState(
-          accessToken: token.access_token, refreshToken: token.refresh_token));
+      emit(AuthAuthorizedState());
     } catch (error, stackTrace) {
-      emit(AuthFailureState(error: error));
+      String errorMessage = LocaleKeys.login_text_failure_snack_bar.tr();
+
+      if (error is DioException) {
+        if (error.response?.statusCode == 422) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_password_or_email.tr();
+        } else if (error.response?.statusCode == 500) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_server_error.tr();
+        }
+      }
+
+      emit(AuthFailureState(error: error, errorMessage: errorMessage));
       _logger?.handle(error, stackTrace);
       emit(AuthUnAuthorizedState());
     }
@@ -153,14 +191,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       await _authClient.logout(
-        _clientId,
-        refreshToken,
+        clientId: _clientId,
+        refreshToken: refreshToken,
       );
 
       await _storage.deleteAll();
       emit(AuthUnAuthorizedState());
     } catch (error, stackTrace) {
-      emit(AuthFailureState(error: error));
+      String errorMessage = LocaleKeys.login_text_failure_snack_bar.tr();
+
+      if (error is DioException) {
+        if (error.response?.statusCode == 401) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_password_or_email.tr();
+        } else if (error.response?.statusCode == 500) {
+          errorMessage =
+              LocaleKeys.login_text_failure_snack_bar_server_error.tr();
+        }
+      }
+
+      emit(AuthFailureState(error: error, errorMessage: errorMessage));
       _logger?.handle(error, stackTrace);
     }
   }

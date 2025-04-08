@@ -1,17 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:ecos/router/router.dart';
-
 import 'package:ecos/ui/core/core.dart';
+import 'package:ecos/generated/locale_keys.g.dart';
 import 'package:ecos/features/auth/auth.dart';
-
-import 'package:ecos/generated/generated.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -20,31 +17,7 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final _key = GlobalKey<FormState>();
-
-  late AuthFormState _state;
-
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _state = AuthFormState();
-    _emailController = TextEditingController()..addListener(_onEmailChanged);
-    _passwordController = TextEditingController()
-      ..addListener(_onPasswordChanged);
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
+class _SignUpPageState extends AuthFormBase<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,86 +25,55 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AuthAppBar(
         onBack: () => context.go(PAGES.login.screenPath),
       ),
-      body: BlocListener<AuthBloc, AuthState>(
+      body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {},
         child: Form(
-          key: _key,
-          child: Center(
+          key: key,
+          child: Align(
+            heightFactor: 2.0,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Align(
-                alignment: Alignment(0, -0.4),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      LocaleKeys.register_text_register.tr(),
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextFormField(
-                        key: const Key('myForm_emailInput'),
-                        controller: _emailController,
-                        textInputAction: TextInputAction.next,
-                        validator: (value) =>
-                            _state.email.validator(value ?? '')?.text(),
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12.0),
-                          hintText: LocaleKeys.register_text_email_input.tr(),
-                          isDense: true,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: TextFormField(
-                        key: const Key('myForm_passwordInput'),
-                        controller: _passwordController,
-                        textInputAction: TextInputAction.done,
-                        validator: (value) =>
-                            _state.password.validator(value ?? '')?.text(),
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12.0),
-                          hintText:
-                              LocaleKeys.register_text_password_input.tr(),
-                          isDense: true,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    HelpText(
-                      questionText: LocaleKeys.register_text_question_text.tr(),
-                      actionText: LocaleKeys.register_text_action_text.tr(),
-                      onPressed: () => context.go(PAGES.login.screenPath),
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    LocaleKeys.register_text_register.tr(),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  BaseTextField(
+                    controller: emailController,
+                    hintText: LocaleKeys.register_text_email_input.tr(),
+                    fieldKey: const Key('signup_emailInput'),
+                    validator: (value) =>
+                        state.email.validator(value ?? '')?.text(),
+                  ),
+                  const SizedBox(height: 12),
+                  BaseTextField(
+                    controller: passwordController,
+                    hintText: LocaleKeys.register_text_password_input.tr(),
+                    obscureText: true,
+                    fieldKey: const Key('signup_passwordInput'),
+                    validator: (value) =>
+                        state.password.validator(value ?? '')?.text(),
+                  ),
+                  const SizedBox(height: 24),
+                  HelpText(
+                    questionText: LocaleKeys.register_text_question_text.tr(),
+                    actionText: LocaleKeys.register_text_action_text.tr(),
+                    onPressed: () => context.go(PAGES.login.screenPath),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
-      floatingActionButton: BlocBuilder<AuthBloc, AuthState>(
+      floatingActionButton: BlocBuilder<RegisterBloc, RegisterState>(
         builder: (context, state) {
-          if (state is AuthRequestState) {
+          if (state is RegisterRequestState) {
             return CircularProgressIndicator(
               color: Color(0xFF25884F),
             );
@@ -140,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
             theme: ThemeData(primaryColor: Colors.white),
             text: LocaleKeys.register_text_register_button.tr(),
             onPressed: () async {
-              await _onSubmit();
+              await submitForm();
             },
           );
         },
@@ -149,70 +91,54 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _onEmailChanged() {
-    setState(() {
-      _state = _state.copyWith(email: Email.dirty(_emailController.text));
-    });
-  }
+  @override
+  Future<void> submitForm() async {
+    if (!key.currentState!.validate()) return;
 
-  void _onPasswordChanged() {
-    setState(() {
-      _state = _state.copyWith(
-        password: Password.dirty(_passwordController.text),
-      );
-    });
-  }
+    final registerBloc = BlocProvider.of<RegisterBloc>(context);
+    final completer = Completer();
 
-  Future<void> _onSubmit() async {
-    if (!_key.currentState!.validate()) return;
-
-    setState(() {
-      _state = _state.copyWith(status: FormzSubmissionStatus.inProgress);
-    });
-
-    try {
-      await _submitForm();
-      _state = _state.copyWith(status: FormzSubmissionStatus.success);
-    } catch (_) {
-      _state = _state.copyWith(status: FormzSubmissionStatus.failure);
-    }
+    registerBloc.add(RegisterRequestEvent(
+      username: emailController.text,
+      password: passwordController.text,
+      completer: completer,
+    ));
+    await completer.future;
 
     if (!mounted) return;
 
-    setState(() {});
+    final registerState = registerBloc.state;
 
-    FocusScope.of(context)
-      ..nextFocus()
-      ..unfocus();
-
-    final successSnackBar = SnackBar(
-      content: Text(
-        LocaleKeys.register_text_success_snack_bar.tr(),
-      ),
-    );
-    final failureSnackBar = SnackBar(
-      content: Text(
-        LocaleKeys.register_text_failure_snack_bar.tr(),
-      ),
-    );
-
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        _state.status.isSuccess ? successSnackBar : failureSnackBar,
+    if (registerState is RegisterFailureState) {
+      showSnackBar(
+        context: context,
+        message: registerState.errorMessage,
+        color: Colors.red,
       );
+      throw Exception();
+    }
 
-    if (_state.status.isSuccess) _resetForm();
+    resetForm();
+    showSnackBar(
+      context: context,
+      message: LocaleKeys.register_text_success_snack_bar.tr(),
+      color: Colors.green,
+    );
+    context.go(PAGES.login.screenPath);
   }
 
-  Future<void> _submitForm() async {}
-
-  void _resetForm() {
-    _key.currentState!.reset();
-    _emailController.clear();
-    _passwordController.clear();
-    setState(() => _state = AuthFormState());
-    context.go(PAGES.home.screenPath);
+  showSnackBar({
+    required BuildContext context,
+    required message,
+    required color,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+        backgroundColor: color,
+      ),
+    );
   }
 }
 
