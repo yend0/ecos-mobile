@@ -10,6 +10,7 @@ import 'package:ecos/clients/clients.dart';
 import 'package:ecos/router/router.dart';
 
 import 'package:ecos/features/auth/auth.dart';
+import 'package:ecos/features/profile/profile.dart';
 
 class EcosApp extends StatefulWidget {
   const EcosApp({super.key});
@@ -21,13 +22,15 @@ class EcosApp extends StatefulWidget {
 class _EcosAppState extends State<EcosApp> {
   late final FlutterSecureStorage _storage;
   late final AuthClient _authClient;
+  late final UserClient _userClient;
   late final Talker _talker;
   @override
   void initState() {
     super.initState();
 
     _storage = const FlutterSecureStorage();
-    _authClient = AuthClient.create(ssoUrl: dotenv.env['SSO_PATH']);
+    _authClient = AuthClient.create(ssoUrl: dotenv.env['SSO_URL']);
+    _userClient = UserClient.create(apiUrl: dotenv.env['API_URL']);
     _talker = TalkerFlutter.init();
   }
 
@@ -44,6 +47,26 @@ class _EcosAppState extends State<EcosApp> {
               'password': 'password',
               'refresh_token': 'refresh_token'
             },
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<RegisterBloc>(
+          create: (context) => RegisterBloc(
+            userClient: _userClient,
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(
+            storage: _storage,
+            userClient: _userClient,
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<AccountBloc>(
+          create: (context) => AccountBloc(
+            storage: _storage,
+            userClient: _userClient,
             logger: _talker,
           ),
         ),
