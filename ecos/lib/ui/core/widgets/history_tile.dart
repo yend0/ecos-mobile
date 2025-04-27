@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ecos/generated/locale_keys.g.dart';
 
 class HistoryTile extends StatelessWidget {
   const HistoryTile({
@@ -26,7 +28,7 @@ class HistoryTile extends StatelessWidget {
         style: theme.textTheme.bodyMedium,
       ),
       trailing: Text(
-        '+$points бал.',
+        '+$points ${LocaleKeys.points.tr()}',
         style: TextStyle(
           fontFamily: 'Outfit',
           color: const Color(0xFF25884F),
