@@ -11,6 +11,7 @@ import 'package:ecos/router/router.dart';
 
 import 'package:ecos/features/auth/auth.dart';
 import 'package:ecos/features/profile/profile.dart';
+import 'package:ecos/features/recycle/recycle.dart';
 
 class EcosApp extends StatefulWidget {
   const EcosApp({super.key});
@@ -23,6 +24,7 @@ class _EcosAppState extends State<EcosApp> {
   late final FlutterSecureStorage _storage;
   late final AuthClient _authClient;
   late final UserClient _userClient;
+  late final WasteClient _wasteClient;
   late final Talker _talker;
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _EcosAppState extends State<EcosApp> {
     _storage = const FlutterSecureStorage();
     _authClient = AuthClient.create(ssoUrl: dotenv.env['SSO_URL']);
     _userClient = UserClient.create(apiUrl: dotenv.env['API_URL']);
+    _wasteClient = WasteClient.create(apiUrl: dotenv.env['API_URL']);
     _talker = TalkerFlutter.init();
   }
 
@@ -67,6 +70,18 @@ class _EcosAppState extends State<EcosApp> {
           create: (context) => AccountBloc(
             storage: _storage,
             userClient: _userClient,
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<KnowledgeBloc>(
+          create: (context) => KnowledgeBloc(
+            wasteClient: _wasteClient,
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<RecycleBloc>(
+          create: (context) => RecycleBloc(
+            wasteClient: _wasteClient,
             logger: _talker,
           ),
         ),
