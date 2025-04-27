@@ -109,8 +109,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
 
-      await _storage.write(key: 'access_token', value: token.access_token);
-      await _storage.write(key: 'refresh_token', value: token.refresh_token);
+      await _storage.write(key: 'access_token', value: token.accessToken);
+      await _storage.write(key: 'refresh_token', value: token.refreshToken);
 
       emit(AuthAuthorizedState());
     } catch (error, stackTrace) {
@@ -153,8 +153,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         refreshToken: refreshToken,
       );
 
-      await _storage.write(key: 'access_token', value: token.access_token);
-      await _storage.write(key: 'refresh_token', value: token.refresh_token);
+      await _storage.write(key: 'access_token', value: token.accessToken);
+      await _storage.write(key: 'refresh_token', value: token.refreshToken);
 
       emit(AuthAuthorizedState());
     } catch (error, stackTrace) {
