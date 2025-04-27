@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:ecos/features/profile/profile.dart';
-import 'package:go_router/go_router.dart';
 
 class ClickListContainer extends StatelessWidget {
   const ClickListContainer({
@@ -30,7 +29,7 @@ class ClickListContainer extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () => context.go(items[index].path),
+            onTap: items[index].onTap,
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
@@ -38,7 +37,7 @@ class ClickListContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    items[index].title,
+                    items[index].name,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Icon(

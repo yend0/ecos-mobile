@@ -20,33 +20,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         _userClient = userClient,
         _logger = logger,
         super(AccountInitialState()) {
-    on<AccountRequestEvent>(_getProfileInformation);
     on<AccountUpdateEvent>(_updateProfileInformation);
   }
 
   final FlutterSecureStorage _storage;
   final UserClient _userClient;
   final Talker? _logger;
-
-  FutureOr<void> _getProfileInformation(
-    AccountRequestEvent event,
-    Emitter<AccountState> emit,
-  ) async {
-    try {
-      emit(AccountRequestState());
-      final accessToken = await _storage.read(key: 'access_token');
-
-      final User user =
-          await _userClient.getAccountInformation(token: 'Bearer $accessToken');
-
-      emit(AccountLoadingSuccessState(user: user));
-    } catch (error, stackTrace) {
-      emit(AccountLoadingFailureState(error: error));
-      _logger?.handle(error, stackTrace);
-    } finally {
-      event.completer?.complete();
-    }
-  }
 
   FutureOr<void> _updateProfileInformation(
     AccountUpdateEvent event,
@@ -57,7 +36,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       final accessToken = await _storage.read(key: 'access_token');
 
       final User user = await _userClient.updateAccountInformation(
-          token: 'Bearer $accessToken');
+        token: 'Bearer $accessToken',
+        data: event.user,
+      );
 
       emit(AccountLoadingSuccessState(user: user));
     } catch (error, stackTrace) {

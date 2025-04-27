@@ -8,35 +8,18 @@ sealed class AccountEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AccountRequestEvent extends AccountEvent {
-  const AccountRequestEvent({
-    this.completer,
-  });
-
-  final Completer? completer;
-
-  @override
-  List<Object?> get props => [completer];
-}
-
 class AccountUpdateEvent extends AccountEvent {
   const AccountUpdateEvent({
     this.completer,
-    this.birthDate,
-    this.imageUrl,
-    this.fullName,
+    required this.user,
   });
 
   final Completer? completer;
-  final DateTime? birthDate;
-  final String? imageUrl;
-  final String? fullName;
+  final User user;
 
   @override
   List<Object?> get props => [
         completer,
-        birthDate,
-        imageUrl,
-        fullName,
+        user,
       ];
 }

@@ -16,7 +16,12 @@ import 'package:ecos/features/auth/auth.dart';
 import 'package:ecos/generated/generated.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+  const AccountPage({
+    super.key,
+    required this.user,
+  });
+
+  final User user;
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -53,7 +58,6 @@ class _AccountPageState extends State<AccountPage> {
     _fullNameController.addListener(_checkForChanges);
 
     BlocProvider.of<AuthBloc>(context).add(const AuthCheckLoginInAppEvent());
-    BlocProvider.of<AccountBloc>(context).add(const AccountRequestEvent());
   }
 
   @override
@@ -68,278 +72,166 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    return BlocListener<AccountBloc, AccountState>(
-      listener: (context, state) async {
-        if (state is AccountLoadingSuccessState) {
-          _emailController.text = state.user.email;
-          _fullNameController.text = state.user.full_name ?? '';
-          _birthDateController.text = state.user.birth_date != null
-              ? DateFormat('dd/MM/yyyy').format(state.user.birth_date!)
-              : '';
-        } else if (state is AccountLoadingFailureState) {
-          await _refreshToken(context);
-        }
-      },
-      child: BlocBuilder<AccountBloc, AccountState>(
-        builder: (context, state) {
-          return Scaffold(
-            floatingActionButton: _hasChanges
-                ? GeneralFloatingActionButton(
-                    theme: theme,
-                    text: 'Применить изменения',
-                    onPressed: _onSavePressed,
-                  )
-                : null,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            body: BlocBuilder<AccountBloc, AccountState>(
-              builder: (context, state) {
-                if (state is AccountRequestState) {
-                  return Scaffold(
-                    body: const LoadingCenterProgress(),
-                  );
-                }
-                if (state is AccountLoadingFailureState) {
-                  return CustomScrollView(
-                    slivers: [
-                      TitleAppBar(
-                        text: LocaleKeys.buttons_route_account.tr(),
-                        onPressed: () => context.go(PAGES.profile.screenPath),
+    _emailController.text = widget.user.email;
+    _fullNameController.text =
+        '${widget.user.middleName} ${widget.user.firstName} ${widget.user.lastName}';
+    _birthDateController.text = widget.user.birthDate != null
+        ? DateFormat('dd/MM/yyyy').format(widget.user.birthDate!)
+        : '';
+    return Scaffold(
+      floatingActionButton: _hasChanges
+          ? GeneralFloatingActionButton(
+              theme: theme,
+              text: 'Применить изменения',
+              onPressed: _onSavePressed,
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: CustomScrollView(
+        slivers: [
+          TitleAppBar(
+            text: LocaleKeys.buttons_route_account.tr(),
+            onPressed: () => context.go(PAGES.profile.screenPath),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 16.0),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: AvatarCircle(
+                      imageUrl: widget.user.imageUrl,
+                    ),
+                  ),
+                  const SizedBox(height: 14.0),
+                  ElevatedButton(
+                    onPressed: () => {},
+                    style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.transparent,
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(48.0),
                       ),
-                      SliverToBoxAdapter(
-                        child: BaseError(
-                          onPressed: () async {
-                            final accountBloc =
-                                BlocProvider.of<AccountBloc>(context);
-                            final complete = Completer();
-
-                            accountBloc
-                                .add(AccountRequestEvent(completer: complete));
-                            await complete.future;
-                          },
+                    ),
+                    child: Text(
+                      LocaleKeys.buttons_action_change_image.tr(),
+                      style: theme.textTheme.titleSmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 100.0),
+              child: SizedBox(
+                child: Form(
+                  key: _key,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TitleDescription(
+                        text: LocaleKeys.title_description_full_name.tr(),
+                        textStyle: theme.textTheme.titleSmall!,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
-                      ),
-                    ],
-                  );
-                }
-                return CustomScrollView(
-                  slivers: [
-                    TitleAppBar(
-                      text: LocaleKeys.buttons_route_account.tr(),
-                      onPressed: () => context.go(PAGES.profile.screenPath),
-                    ),
-                    BlocBuilder<AccountBloc, AccountState>(
-                      builder: (context, state) {
-                        if (state is AccountLoadingSuccessState) {
-                          return SliverToBoxAdapter(
-                            child: SizedBox(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 16.0),
-                                  Align(
-                                    alignment: Alignment.topCenter,
-                                    child: AvatarCircle(
-                                      imageUrl: state.user.image_url,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 14.0),
-                                  ElevatedButton(
-                                    onPressed: () => {},
-                                    style: ElevatedButton.styleFrom(
-                                      shadowColor: Colors.transparent,
-                                      elevation: 0.0,
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(48.0),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      LocaleKeys.buttons_action_change_image
-                                          .tr(),
-                                      style: theme.textTheme.titleSmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        } else {
-                          return SliverToBoxAdapter(
-                            child: SizedBox(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 16.0),
-                                  Align(
-                                    alignment: Alignment.topCenter,
-                                    child: AvatarCircle(),
-                                  ),
-                                  const SizedBox(height: 14.0),
-                                  ElevatedButton(
-                                    onPressed: () => {},
-                                    style: ElevatedButton.styleFrom(
-                                      shadowColor: Colors.transparent,
-                                      elevation: 0.0,
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(48.0),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      LocaleKeys.buttons_action_change_image
-                                          .tr(),
-                                      style: theme.textTheme.titleSmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 100.0),
-                        child: SizedBox(
-                          child: Form(
-                            key: _key,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TitleDescription(
-                                  text: LocaleKeys.title_description_full_name
-                                      .tr(),
-                                  textStyle: theme.textTheme.titleSmall!,
-                                ),
-                                const SizedBox(height: 8.0),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: TextFormField(
-                                    key: const Key('myForm_fullNameInput'),
-                                    controller: _fullNameController,
-                                    validator: (value) => _state.fullName
-                                        .validator(value ?? '')
-                                        ?.text(),
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType: TextInputType.name,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.zero,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 24.0),
-                                TitleDescription(
-                                  text: LocaleKeys.title_description_email.tr(),
-                                  textStyle: theme.textTheme.titleSmall!,
-                                ),
-                                const SizedBox(height: 8.0),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: TextFormField(
-                                    key: const Key('myForm_emailInput'),
-                                    controller: _emailController,
-                                    readOnly: true,
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 12.0),
-                                      suffixIcon:
-                                          BlocBuilder<AuthBloc, AuthState>(
-                                        builder: (context, state) {
-                                          if (state is AuthAuthorizedState) {
-                                            if (state.userInfo != null) {
-                                              final UserInfo userInfo =
-                                                  state.userInfo!;
-
-                                              return userInfo.email_verified
-                                                  ? Icon(
-                                                      Icons.verified,
-                                                      color: Colors.black,
-                                                    )
-                                                  : Icon(
-                                                      Icons.warning,
-                                                      color: Colors.black,
-                                                    );
-                                            }
-                                          }
-                                          return Icon(
-                                            Icons.schedule,
-                                            color: Colors.black,
-                                          );
-                                        },
-                                      ),
-                                      suffixIconConstraints: BoxConstraints(
-                                        minWidth: 24.0,
-                                        minHeight: 24.0,
-                                      ),
-                                      isDense: true,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 24.0),
-                                TitleDescription(
-                                  text: LocaleKeys.title_description_birth_date
-                                      .tr(),
-                                  textStyle: theme.textTheme.titleSmall!,
-                                ),
-                                const SizedBox(height: 8.0),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: TextFormField(
-                                    key: const Key('myForm_birthDateInput'),
-                                    controller: _birthDateController,
-                                    inputFormatters: [_birthDateFormatter],
-                                    validator: (value) => _state.birthDate
-                                        .validator(value ?? '')
-                                        ?.text(),
-                                    textInputAction: TextInputAction.done,
-                                    keyboardType: TextInputType.datetime,
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.zero,
-                                      hintText: 'MM/dd/yyyy',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          key: const Key('myForm_fullNameInput'),
+                          controller: _fullNameController,
+                          validator: (value) =>
+                              _state.fullName.validator(value ?? '')?.text(),
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                      const SizedBox(height: 24.0),
+                      TitleDescription(
+                        text: LocaleKeys.title_description_email.tr(),
+                        textStyle: theme.textTheme.titleSmall!,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          key: const Key('myForm_emailInput'),
+                          controller: _emailController,
+                          readOnly: true,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 12.0),
+                            suffixIcon: widget.user.emailVerified!
+                                ? Icon(
+                                    Icons.verified,
+                                    color: Colors.black,
+                                  )
+                                : Icon(
+                                    Icons.warning,
+                                    color: Colors.black,
+                                  ),
+                            suffixIconConstraints: BoxConstraints(
+                              minWidth: 24.0,
+                              minHeight: 24.0,
+                            ),
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24.0),
+                      TitleDescription(
+                        text: LocaleKeys.title_description_birth_date.tr(),
+                        textStyle: theme.textTheme.titleSmall!,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: TextFormField(
+                          key: const Key('myForm_birthDateInput'),
+                          controller: _birthDateController,
+                          inputFormatters: [_birthDateFormatter],
+                          validator: (value) =>
+                              _state.birthDate.validator(value ?? '')?.text(),
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.datetime,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                            hintText: 'MM/dd/yyyy',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -367,25 +259,21 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void _checkForChanges() {
-    final currentState = BlocProvider.of<AccountBloc>(context).state;
-    if (currentState is AccountLoadingSuccessState) {
-      final hasChanges =
-          _fullNameController.text != (currentState.user.full_name ?? '') ||
-              _birthDateController.text !=
-                  (currentState.user.birth_date != null
-                      ? DateFormat('dd/MM/yyyy')
-                          .format(currentState.user.birth_date!)
-                      : '');
+    final hasChanges = _fullNameController.text !=
+            ('${widget.user.middleName} ${widget.user.firstName} ${widget.user.lastName}') ||
+        _birthDateController.text !=
+            (widget.user.birthDate != null
+                ? DateFormat('dd/MM/yyyy').format(widget.user.birthDate!)
+                : '');
 
-      if (_hasChanges != hasChanges) {
-        setState(() {
-          _hasChanges = hasChanges;
-        });
-      }
+    if (_hasChanges != hasChanges) {
+      setState(() {
+        _hasChanges = hasChanges;
+      });
     }
   }
 
-  void _onSavePressed() {
+  Future<void> _onSavePressed() async {
     if (_key.currentState?.validate() ?? false) {
       final fullName = _fullNameController.text;
       final birthDateString = _birthDateController.text;
@@ -396,33 +284,36 @@ class _AccountPageState extends State<AccountPage> {
         birthDate = null;
       }
 
+      List<String> parts = fullName.split(' ');
+      String firstName = parts[1];
+      String middleName = parts[0];
+      String lastName = parts[2];
+
       final accountBloc = BlocProvider.of<AccountBloc>(context);
       final complete = Completer();
+
       accountBloc.add(
         AccountUpdateEvent(
           completer: complete,
-          fullName: fullName,
-          birthDate: birthDate,
+          user: User(
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            birthDate: birthDate,
+            imageUrl: null,
+            email: _emailController.text,
+            id: '',
+            points: 0,
+          ),
         ),
       );
+
+      await complete.future;
 
       setState(() {
         _hasChanges = false;
       });
     }
-  }
-
-  Future<void> _refreshToken(BuildContext context) async {
-    final authBloc = BlocProvider.of<AuthBloc>(context);
-    final accountBloc = BlocProvider.of<AccountBloc>(context);
-    final complete = Completer();
-
-    authBloc.add(AuthRefreshEvent(completer: complete));
-    await complete.future;
-
-    accountBloc.add(AccountRequestEvent(completer: complete));
-
-    await complete.future;
   }
 }
 

@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 class ClickItem {
-  ClickItem({
-    required this.title,
-    required this.path,
+  const ClickItem({
+    required this.name,
+    required this.onTap,
   });
 
-  final String title;
-  final String path;
+  final String name;
+  final VoidCallback onTap;
 }

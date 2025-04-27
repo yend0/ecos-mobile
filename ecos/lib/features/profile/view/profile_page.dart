@@ -16,13 +16,6 @@ class ProfilePage extends StatefulWidget {
 
   static const String _historyIcon = 'assets/icons/ic_history.svg';
 
-  static List<ClickItem> helps = [
-    ClickItem(
-      title: LocaleKeys.buttons_route_faq.tr(),
-      path: PAGES.profile.screenPath,
-    ),
-  ];
-
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -40,24 +33,33 @@ class _ProfilePageState extends State<ProfilePage> {
       listener: (context, state) {},
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          List<ClickItem> settings = [
-            ClickItem(
-                title: LocaleKeys.buttons_route_account.tr(),
-                path:
-                    '${PAGES.profile.screenPath}/${PAGES.account.screenPath}'),
-            ClickItem(
-              title: LocaleKeys.buttons_route_languages.tr(),
-              path:
-                  '${PAGES.profile.screenPath}/${PAGES.localization.screenPath}',
-            ),
-          ];
+          if (state is ProfileLoadingFailureState) {
+            return BaseError(
+              onPressed: () async {
+                final profileBloc = BlocProvider.of<ProfileBloc>(context);
+                final complete = Completer();
 
-          if (state is ProfileRequestState) {
-            return const LoadingCenterProgress();
+                profileBloc.add(ProfileRequestEvent(completer: complete));
+                await complete.future;
+              },
+            );
           }
           if (state is ProfileLoadingSuccessState) {
             final user = state.user;
-
+            List<ClickItem> settings = [
+              ClickItem(
+                name: LocaleKeys.buttons_route_account.tr(),
+                onTap: () => context.go(
+                  '${PAGES.profile.screenPath}/${PAGES.account.screenPath}',
+                  extra: user,
+                ),
+              ),
+              ClickItem(
+                name: LocaleKeys.buttons_route_languages.tr(),
+                onTap: () => context.go(
+                    '${PAGES.profile.screenPath}/${PAGES.localization.screenPath}'),
+              ),
+            ];
             return Scaffold(
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -85,12 +87,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             Align(
                               alignment: Alignment.topCenter,
                               child: AvatarCircle(
-                                imageUrl: user.image_url,
+                                imageUrl: user.imageUrl,
                               ),
                             ),
                             SizedBox(height: 16.0),
                             Text(
-                              _extractNameAndFirstLetter(user.full_name),
+                              user.firstName ?? '',
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
@@ -105,7 +107,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               text: LocaleKeys.feature_card_description_history
                                   .tr(),
                               onTap: () => context.go(
-                                  '${PAGES.profile.screenPath}/${PAGES.history.screenPath}'),
+                                '${PAGES.profile.screenPath}/${PAGES.history.screenPath}',
+                                extra: user.accuralHistories,
+                              ),
                               svgAsset: ProfilePage._historyIcon,
                             ),
                           ),
@@ -164,7 +168,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     SliverToBoxAdapter(
                       child: ClickListContainer(
-                        items: ProfilePage.helps,
+                        items: [
+                          ClickItem(
+                            name: LocaleKeys.buttons_route_faq.tr(),
+                            onTap: () => context.go(PAGES.profile.screenPath),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -172,30 +181,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           }
-          return BaseError(
-            onPressed: () async {
-              final profileBloc = BlocProvider.of<ProfileBloc>(context);
-              final complete = Completer();
-
-              profileBloc.add(ProfileRequestEvent(completer: complete));
-              await complete.future;
-            },
-          );
+          return const LoadingCenterProgress();
         },
       ),
     );
-  }
-
-  String _extractNameAndFirstLetter(String? fullName) {
-    if (fullName == null) {
-      return '';
-    }
-    List<String> parts = fullName.split(' ');
-
-    String firstName = parts[1];
-    String middleNameInitial = parts[0][0];
-    String lastNameInitial = parts[2][0];
-
-    return '$firstName $middleNameInitial.$lastNameInitial.';
   }
 }
