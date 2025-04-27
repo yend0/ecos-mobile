@@ -10,7 +10,9 @@ class BaseInformation extends Equatable {
     required this.message,
   });
 
+  @JsonKey(name: 'status')
   final String status;
+  @JsonKey(name: 'message')
   final String message;
 
   factory BaseInformation.fromJson(Map<String, dynamic> json) =>

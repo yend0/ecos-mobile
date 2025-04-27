@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,14 +7,18 @@ part 'user_info.g.dart';
 class UserInfo extends Equatable {
   const UserInfo({
     required this.sub,
-    required this.email_verified,
+    required this.emailVerified,
     required this.email,
-    required this.preferred_username,
+    required this.preferredUsername,
   });
 
+  @JsonKey(name: 'sub')
   final String sub;
-  final bool email_verified;
-  final String preferred_username;
+  @JsonKey(name: 'email_verified')
+  final bool emailVerified;
+  @JsonKey(name: 'preferred_username')
+  final String preferredUsername;
+  @JsonKey(name: 'email')
   final String email;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) =>
@@ -27,8 +29,8 @@ class UserInfo extends Equatable {
   @override
   List<Object> get props => [
         sub,
-        email_verified,
+        emailVerified,
         email,
-        preferred_username,
+        preferredUsername,
       ];
 }
