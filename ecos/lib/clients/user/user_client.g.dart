@@ -57,26 +57,20 @@ class _UserClient implements UserClient {
   @override
   Future<User> updateAccountInformation({
     required String token,
-    List<MultipartFile>? files,
-    User? data,
+    String? filenames,
+    required FormData formData,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{r'Authorization': token};
+    final _headers = <String, dynamic>{
+      r'Authorization': token,
+      r'filenames': filenames,
+    };
     _headers.removeWhere((k, v) => v == null);
-    final _data = FormData();
-    if (files != null) {
-      _data.files.addAll(files.map((i) => MapEntry('files', i)));
-    }
-    _data.fields.add(MapEntry('data', jsonEncode(data ?? <String, dynamic>{})));
+    final _data = formData;
     final _options = _setStreamType<User>(
-      Options(
-        method: 'PATCH',
-        headers: _headers,
-        extra: _extra,
-        contentType: 'multipart/form-data',
-      )
+      Options(method: 'PATCH', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             '/users/profile',

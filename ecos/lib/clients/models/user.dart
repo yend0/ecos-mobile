@@ -9,11 +9,7 @@ part 'user.g.dart';
 class User extends Equatable {
   const User({
     required this.id,
-    required this.birthDate,
     required this.imageUrl,
-    required this.firstName,
-    required this.middleName,
-    required this.lastName,
     required this.points,
     required this.email,
     this.emailVerified,
@@ -24,14 +20,6 @@ class User extends Equatable {
   final String email;
   @JsonKey(name: 'id')
   final String id;
-  @JsonKey(name: 'first_name')
-  final String? firstName;
-  @JsonKey(name: 'middle_name')
-  final String? middleName;
-  @JsonKey(name: 'last_name')
-  final String? lastName;
-  @JsonKey(name: 'birth_date')
-  final DateTime? birthDate;
   @JsonKey(name: 'image_url')
   final String? imageUrl;
   @JsonKey(name: 'points')
@@ -49,11 +37,7 @@ class User extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        birthDate,
         imageUrl,
-        firstName,
-        middleName,
-        lastName,
         emailVerified,
         points,
         email,

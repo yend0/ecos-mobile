@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -27,12 +25,11 @@ abstract class UserClient {
     @Field('password') required String password,
   });
 
-  @MultiPart()
   @PATCH('/users/profile')
   Future<User> updateAccountInformation({
     @Header('Authorization') required String token,
-    @Part() List<MultipartFile>? files,
-    @Part() User? data,
+    @Header('filenames') String? filenames,
+    @Body() required FormData formData,
   });
 
   @GET('/users/profile')
