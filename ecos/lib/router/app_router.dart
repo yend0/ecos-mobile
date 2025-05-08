@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +12,8 @@ import 'package:ecos/features/recycle/recycle.dart';
 import 'package:ecos/features/root/root.dart';
 import 'package:ecos/features/profile/localization/localization.dart';
 import 'package:ecos/features/auth/auth.dart';
+
+import 'package:ecos/clients/clients.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -61,7 +65,10 @@ class AppRouter {
                   GoRoute(
                     path: PAGES.account.screenPath,
                     name: PAGES.account.screenName,
-                    builder: (context, state) => const AccountPage(),
+                    builder: (context, state) {
+                      final user = state.extra as User;
+                      return AccountPage(user: user);
+                    },
                   ),
                   GoRoute(
                     path: PAGES.localization.screenPath,
@@ -69,10 +76,13 @@ class AppRouter {
                     builder: (context, state) => const LocalizationPage(),
                   ),
                   GoRoute(
-                    path: PAGES.history.screenPath,
-                    name: PAGES.history.screenName,
-                    builder: (context, state) => const HistoryPage(),
-                  ),
+                      path: PAGES.history.screenPath,
+                      name: PAGES.history.screenName,
+                      builder: (context, state) {
+                        final accrualHistories =
+                            state.extra as List<AccuralHistory>;
+                        return HistoryPage(accrualHistories: accrualHistories);
+                      }),
                   GoRoute(
                     path: PAGES.knowledgeBase.screenPath,
                     name: PAGES.knowledgeBase.screenName,
@@ -81,8 +91,10 @@ class AppRouter {
                       GoRoute(
                         path: PAGES.knowledgeDetail.screenPath,
                         name: PAGES.knowledgeDetail.screenName,
-                        builder: (context, state) =>
-                            const KnowledgeDetailPage(),
+                        builder: (context, state) {
+                          final waste = state.extra as Waste;
+                          return KnowledgeDetailPage(waste: waste);
+                        },
                       ),
                     ],
                   ),
@@ -103,19 +115,26 @@ class AppRouter {
         builder: (context, state) => const SignUpPage(),
       ),
     ],
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final authState = context.read<AuthBloc>().state;
 
       if (authState is AuthInitialState) {
-        context.read<AuthBloc>().add(AuthCheckLoginInAppEvent());
+        final complete = Completer();
+        context
+            .read<AuthBloc>()
+            .add(AuthCheckLoginInAppEvent(completer: complete));
+        await complete.future;
       }
 
       final isLoggedIn = authState is AuthAuthorizedState;
 
       final isGoingToProfile = state.fullPath == PAGES.profile.screenPath;
       final isGoingToLogin = state.fullPath == PAGES.login.screenPath;
+      final isGoingToRegister = state.fullPath == PAGES.register.screenPath;
 
       if (!isLoggedIn && isGoingToProfile) return PAGES.login.screenPath;
+
+      if (!isLoggedIn && isGoingToRegister) return PAGES.register.screenPath;
 
       if (isLoggedIn && isGoingToProfile) return PAGES.profile.screenPath;
 

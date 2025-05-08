@@ -7,9 +7,11 @@ class CardPoints extends StatelessWidget {
   const CardPoints({
     super.key,
     required this.theme,
+    required this.points,
   });
 
   final ThemeData theme;
+  final int points;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class CardPoints extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '82',
+                    points.toString(),
                     style: TextStyle(
                       fontFamily: 'Outfit',
                       fontSize: 48,

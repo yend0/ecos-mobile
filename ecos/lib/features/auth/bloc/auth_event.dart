@@ -8,7 +8,16 @@ sealed class AuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AuthCheckLoginInAppEvent extends AuthEvent {}
+class AuthCheckLoginInAppEvent extends AuthEvent {
+  const AuthCheckLoginInAppEvent({
+    this.completer,
+  });
+
+  final Completer? completer;
+
+  @override
+  List<Object?> get props => [completer];
+}
 
 class AuthAuthorizeEvent extends AuthEvent {
   const AuthAuthorizeEvent({
@@ -25,6 +34,24 @@ class AuthAuthorizeEvent extends AuthEvent {
   List<Object?> get props => [username, password, completer];
 }
 
-class AuthRefreshEvent extends AuthEvent {}
+class AuthRefreshEvent extends AuthEvent {
+  const AuthRefreshEvent({
+    this.completer,
+  });
 
-class AuthLogoutEvent extends AuthEvent {}
+  final Completer? completer;
+
+  @override
+  List<Object?> get props => [completer];
+}
+
+class AuthLogoutEvent extends AuthEvent {
+  const AuthLogoutEvent({
+    this.completer,
+  });
+
+  final Completer? completer;
+
+  @override
+  List<Object?> get props => [completer];
+}

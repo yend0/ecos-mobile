@@ -14,12 +14,21 @@ class AvatarCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: radius,
-      backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
-          ? NetworkImage(imageUrl!)
-          : null,
-      backgroundColor: imageUrl == null || imageUrl!.isEmpty ? _color : null,
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.black,
+          width: 0.7,
+        ),
+      ),
+      child: CircleAvatar(
+        radius: radius,
+        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+            ? NetworkImage(imageUrl!)
+            : null,
+        backgroundColor: imageUrl == null || imageUrl!.isEmpty ? _color : null,
+      ),
     );
   }
 }

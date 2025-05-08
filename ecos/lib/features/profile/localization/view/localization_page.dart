@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:easy_localization/easy_localization.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecos/features/profile/profile.dart';
+import 'package:ecos/features/recycle/recycle.dart';
 import 'package:ecos/router/router.dart';
 import 'package:ecos/generated/generated.dart';
 
@@ -20,7 +20,6 @@ class _LocalizationPageState extends State<LocalizationPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     var selectedLanguage = context.locale.toString();
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -43,6 +42,14 @@ class _LocalizationPageState extends State<LocalizationPage> {
                       setState(() {
                         context.setLocale(Locale('ru', 'RU'));
                         selectedLanguage = context.locale.toString();
+                        final knowledgeBloc =
+                            BlocProvider.of<KnowledgeBloc>(context);
+                        final recycleBloc =
+                            BlocProvider.of<RecycleBloc>(context);
+                        knowledgeBloc.add(
+                            KnowledgeChangeLocaleEvent(languageCode: 'ru'));
+                        recycleBloc
+                            .add(RecycleChangeLocaleEvent(languageCode: 'ru'));
                       });
                     }),
                 RadioListTile(
@@ -56,6 +63,15 @@ class _LocalizationPageState extends State<LocalizationPage> {
                       setState(() {
                         context.setLocale(Locale('en', 'US'));
                         selectedLanguage = context.locale.toString();
+
+                        final knowledgeBloc =
+                            BlocProvider.of<KnowledgeBloc>(context);
+                        final recycleBloc =
+                            BlocProvider.of<RecycleBloc>(context);
+                        knowledgeBloc.add(
+                            KnowledgeChangeLocaleEvent(languageCode: 'en'));
+                        recycleBloc
+                            .add(RecycleChangeLocaleEvent(languageCode: 'en'));
                       });
                     }),
               ],

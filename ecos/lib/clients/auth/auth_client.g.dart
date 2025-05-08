@@ -18,12 +18,12 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<Token> login(
-    String clientId,
-    String grantType,
-    String username,
-    String password,
-  ) async {
+  Future<Token> login({
+    required String clientId,
+    required String grantType,
+    required String username,
+    required String password,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -60,7 +60,10 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<void> logout(String clientId, String refreshToken) async {
+  Future<void> logout({
+    required String clientId,
+    required String refreshToken,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -84,11 +87,11 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<Token> refresh(
-    String clientId,
-    String grantType,
-    String refreshToken,
-  ) async {
+  Future<Token> refresh({
+    required String clientId,
+    required String grantType,
+    required String refreshToken,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -124,7 +127,7 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<UserInfo> userInfo(String token) async {
+  Future<UserInfo> userInfo({required String token}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': token};

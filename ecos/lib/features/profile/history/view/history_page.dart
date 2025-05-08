@@ -6,11 +6,17 @@ import 'package:go_router/go_router.dart';
 import 'package:ecos/ui/ui.dart';
 import 'package:ecos/router/router.dart';
 import 'package:ecos/features/profile/profile.dart';
+import 'package:ecos/clients/clients.dart';
 
 import 'package:ecos/generated/generated.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key});
+  const HistoryPage({
+    super.key,
+    required this.accrualHistories,
+  });
+
+  final List<AccuralHistory> accrualHistories;
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +31,24 @@ class HistoryPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: HistoryList(
-                historyTiles: [
-                  HistoryTile(
-                    text: 'Добавлен пункт',
-                    points: 10,
-                    dateTime: '06/04/2024 - 7:03',
-                  ),
-                  HistoryTile(
-                    text: 'Добавлен пункт',
-                    points: 50,
-                    dateTime: '06/04/2024 - 7:03',
-                  ),
-                  HistoryTile(
-                    text: 'Добавлен пункт',
-                    points: 70,
-                    dateTime: '06/04/2024 - 7:03',
-                  ),
-                ],
-              ),
+                  historyTiles: accrualHistories
+                      .map((history) => HistoryTile(
+                            text: history.reward,
+                            points: history.points,
+                            dateTime: _formatDateTime(history.created),
+                          ))
+                      .toList()),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) return "--/--/---- - --:--";
+
+    final dateFormat = DateFormat('dd/MM/yyyy - H:mm');
+    return dateFormat.format(dateTime);
   }
 }
