@@ -7,8 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import 'package:ecos/ui/ui.dart';
 import 'package:ecos/router/router.dart';
 import 'package:ecos/features/profile/profile.dart';
@@ -33,14 +31,7 @@ class _AccountPageState extends State<AccountPage> {
   late AccountFormState _state;
   bool _hasChanges = false;
 
-  late final TextEditingController _birthDateController;
   late final TextEditingController _emailController;
-  late final TextEditingController _fullNameController;
-
-  final _birthDateFormatter = MaskTextInputFormatter(
-    mask: '##/##/####',
-    filter: {"#": RegExp(r'[0-9]')},
-  );
 
   @override
   void initState() {
@@ -48,44 +39,50 @@ class _AccountPageState extends State<AccountPage> {
 
     _state = AccountFormState();
 
-    _birthDateController = TextEditingController()
-      ..addListener(_onBirthDateChanged);
     _emailController = TextEditingController()..addListener(_onEmailChanged);
-    _fullNameController = TextEditingController()
-      ..addListener(_onFullNameChanged);
 
-    _birthDateController.addListener(_checkForChanges);
-    _fullNameController.addListener(_checkForChanges);
+    _emailController.text = widget.user.email;
 
     BlocProvider.of<AuthBloc>(context).add(const AuthCheckLoginInAppEvent());
   }
 
   @override
   void dispose() {
-    _birthDateController.dispose();
     _emailController.dispose();
-    _fullNameController.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    _emailController.text = widget.user.email;
-    _fullNameController.text =
-        '${widget.user.middleName} ${widget.user.firstName} ${widget.user.lastName}';
-    _birthDateController.text = widget.user.birthDate != null
-        ? DateFormat('dd/MM/yyyy').format(widget.user.birthDate!)
-        : '';
     return Scaffold(
-      floatingActionButton: _hasChanges
-          ? GeneralFloatingActionButton(
+      floatingActionButton: BlocBuilder<AccountBloc, AccountState>(
+        builder: (context, state) {
+          if (state is AccountRequestState) {
+            return FloatingActionButton(
+              onPressed: null,
+              backgroundColor: const Color(0xFF25884F),
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            );
+          }
+          if (_hasChanges && state is AccountInitialState) {
+            return GeneralFloatingActionButton(
               theme: theme,
-              text: 'Применить изменения',
+              text: LocaleKeys.buttons_action_change_account_information.tr(),
               onPressed: _onSavePressed,
-            )
-          : null,
+            );
+          } else if (state is AccountLoadingFailureState) {
+            return showSnackBar(
+              context: context,
+              message: LocaleKeys.account_change_failure_snack_bar.tr(),
+              color: Colors.red,
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: CustomScrollView(
         slivers: [
@@ -136,31 +133,6 @@ class _AccountPageState extends State<AccountPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TitleDescription(
-                        text: LocaleKeys.title_description_full_name.tr(),
-                        textStyle: theme.textTheme.titleSmall!,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextFormField(
-                          key: const Key('myForm_fullNameInput'),
-                          controller: _fullNameController,
-                          validator: (value) =>
-                              _state.fullName.validator(value ?? '')?.text(),
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.name,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24.0),
-                      TitleDescription(
                         text: LocaleKeys.title_description_email.tr(),
                         textStyle: theme.textTheme.titleSmall!,
                       ),
@@ -198,33 +170,6 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24.0),
-                      TitleDescription(
-                        text: LocaleKeys.title_description_birth_date.tr(),
-                        textStyle: theme.textTheme.titleSmall!,
-                      ),
-                      const SizedBox(height: 8.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextFormField(
-                          key: const Key('myForm_birthDateInput'),
-                          controller: _birthDateController,
-                          inputFormatters: [_birthDateFormatter],
-                          validator: (value) =>
-                              _state.birthDate.validator(value ?? '')?.text(),
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.datetime,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.zero,
-                            hintText: 'MM/dd/yyyy',
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -242,102 +187,52 @@ class _AccountPageState extends State<AccountPage> {
     });
   }
 
-  void _onBirthDateChanged() {
-    setState(() {
-      _state = _state.copyWith(
-        birthDate: BirthDate.dirty(_birthDateController.text),
-      );
-    });
-  }
-
-  void _onFullNameChanged() {
-    setState(() {
-      _state = _state.copyWith(
-        fullName: FullName.dirty(_fullNameController.text),
-      );
-    });
-  }
-
-  void _checkForChanges() {
-    final hasChanges = _fullNameController.text !=
-            ('${widget.user.middleName} ${widget.user.firstName} ${widget.user.lastName}') ||
-        _birthDateController.text !=
-            (widget.user.birthDate != null
-                ? DateFormat('dd/MM/yyyy').format(widget.user.birthDate!)
-                : '');
-
-    if (_hasChanges != hasChanges) {
-      setState(() {
-        _hasChanges = hasChanges;
-      });
-    }
-  }
-
   Future<void> _onSavePressed() async {
     if (_key.currentState?.validate() ?? false) {
-      final fullName = _fullNameController.text;
-      final birthDateString = _birthDateController.text;
-      DateTime? birthDate;
-      try {
-        birthDate = DateFormat('MM/dd/yyyy').parseStrict(birthDateString);
-      } catch (_) {
-        birthDate = null;
-      }
-
-      List<String> parts = fullName.split(' ');
-      String firstName = parts[1];
-      String middleName = parts[0];
-      String lastName = parts[2];
-
       final accountBloc = BlocProvider.of<AccountBloc>(context);
-      final complete = Completer();
-
-      accountBloc.add(
-        AccountUpdateEvent(
-          completer: complete,
-          user: User(
-            firstName: firstName,
-            middleName: middleName,
-            lastName: lastName,
-            birthDate: birthDate,
-            imageUrl: null,
-            email: _emailController.text,
-            id: '',
-            points: 0,
-          ),
-        ),
-      );
-
-      await complete.future;
+      final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
       setState(() {
         _hasChanges = false;
       });
+
+      final updateCompleter = Completer();
+      // accountBloc.add(
+      //   AccountUpdateEvent(
+      //     completer: updateCompleter,
+      //   ),
+      // );
+      await updateCompleter.future;
+
+      final profileCompleter = Completer();
+      profileBloc.add(
+        ProfileRequestEvent(
+          completer: profileCompleter,
+        ),
+      );
+      await profileCompleter.future;
+
+      showSnackBar(
+        context: context,
+        message: LocaleKeys.account_change_success_snack_bar.tr(),
+        color: Colors.green,
+      );
+
+      context.go(PAGES.profile.screenPath);
     }
   }
-}
 
-extension on FullNameValidationError {
-  String text() {
-    switch (this) {
-      case FullNameValidationError.invalid:
-        return LocaleKeys.validations_full_name_validation_error_invalid.tr();
-      case FullNameValidationError.empty:
-        return LocaleKeys.validations_full_name_validation_error_empty.tr();
-    }
-  }
-}
-
-extension on BirthDateValidationError {
-  String text() {
-    switch (this) {
-      case BirthDateValidationError.invalid:
-        return LocaleKeys.validations_birth_date_validation_error_invalid.tr();
-      case BirthDateValidationError.empty:
-        return LocaleKeys.validations_birth_date_validation_error_empty.tr();
-      case BirthDateValidationError.invalidFormat:
-        return LocaleKeys.validations_birth_date_validation_error_invalidFormat
-            .tr();
-    }
+  showSnackBar({
+    required BuildContext context,
+    required message,
+    required color,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+        backgroundColor: color,
+      ),
+    );
   }
 }

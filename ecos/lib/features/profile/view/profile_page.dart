@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             SizedBox(height: 16.0),
                             Text(
-                              user.firstName ?? '',
+                              user.email,
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Expanded(
                             child: FeatureCard(
                               text: LocaleKeys
-                                  .feature_card_description_knowledge_base
+                                  .feature_card_description_reference_information
                                   .tr(),
                               onTap: () => context.go(
                                   '${PAGES.profile.screenPath}/${PAGES.knowledgeBase.screenPath}'),

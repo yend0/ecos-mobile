@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -35,12 +38,34 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       emit(AccountRequestState());
       final accessToken = await _storage.read(key: 'access_token');
 
-      final User user = await _userClient.updateAccountInformation(
-        token: 'Bearer $accessToken',
-        data: event.user,
-      );
+      final userJson = jsonEncode({
+        "first_name": event.firstName,
+        "middle_name": event.middleName,
+        "last_name": event.lastName,
+        "birth_date": event.birthDate?.toIso8601String(),
+      });
 
-      emit(AccountLoadingSuccessState(user: user));
+      if (event.file == null) {
+        final formData = FormData.fromMap({
+          'data': userJson,
+        });
+        final User user = await _userClient.updateAccountInformation(
+          token: 'Bearer $accessToken',
+          formData: formData,
+        );
+        emit(AccountLoadingSuccessState(user: user));
+      } else {
+        final formData = FormData.fromMap({
+          event.fileName!: event.file,
+          'data': userJson,
+        });
+        final User user = await _userClient.updateAccountInformation(
+          token: 'Bearer $accessToken',
+          filenames: event.fileName,
+          formData: formData,
+        );
+        emit(AccountLoadingSuccessState(user: user));
+      }
     } catch (error, stackTrace) {
       emit(AccountLoadingFailureState(error: error));
       _logger?.handle(error, stackTrace);

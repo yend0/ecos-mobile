@@ -10,7 +10,7 @@ class LoadingCenterProgress extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(
-          color: Colors.black,
+          color: const Color(0xFF25884F),
         ),
       ),
     );

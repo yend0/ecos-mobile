@@ -76,8 +76,12 @@ class _SignInPageState extends AuthFormBase<SignInPage> {
       floatingActionButton: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthRequestState) {
-            return CircularProgressIndicator(
-              color: Color(0xFF25884F),
+            return FloatingActionButton(
+              onPressed: null,
+              backgroundColor: const Color(0xFF25884F),
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+              ),
             );
           }
           return GeneralFloatingActionButton(

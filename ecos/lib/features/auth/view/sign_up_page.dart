@@ -74,8 +74,12 @@ class _SignUpPageState extends AuthFormBase<SignUpPage> {
       floatingActionButton: BlocBuilder<RegisterBloc, RegisterState>(
         builder: (context, state) {
           if (state is RegisterRequestState) {
-            return CircularProgressIndicator(
-              color: Color(0xFF25884F),
+            return FloatingActionButton(
+              onPressed: null,
+              backgroundColor: const Color(0xFF25884F),
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+              ),
             );
           }
           return GeneralFloatingActionButton(

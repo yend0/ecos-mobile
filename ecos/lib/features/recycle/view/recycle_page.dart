@@ -46,7 +46,7 @@ class _RecyclePageState extends State<RecyclePage> {
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => WasteCard(
-                        name: featureCards[index].wasteTranslations[index].name,
+                        name: featureCards[index].wasteTranslations[0].name,
                         abbreviatedName: featureCards[index].abbreviatedName,
                         onTap: () {},
                         icon: featureCards[index].imageUrl,

@@ -38,8 +38,9 @@ class _KnowledgeBasePageState extends State<KnowledgeBasePage> {
               body: CustomScrollView(
                 slivers: [
                   TitleAppBar(
-                    text:
-                        LocaleKeys.feature_card_description_knowledge_base.tr(),
+                    text: LocaleKeys
+                        .feature_card_description_reference_information
+                        .tr(),
                     onPressed: () => context.go(PAGES.profile.screenPath),
                   ),
                   SliverToBoxAdapter(
@@ -60,7 +61,8 @@ class _KnowledgeBasePageState extends State<KnowledgeBasePage> {
           return Scaffold(
             body: CustomScrollView(slivers: [
               TitleAppBar(
-                text: LocaleKeys.feature_card_description_knowledge_base.tr(),
+                text: LocaleKeys.feature_card_description_reference_information
+                    .tr(),
                 onPressed: () => context.go(PAGES.profile.screenPath),
               ),
               SliverToBoxAdapter(

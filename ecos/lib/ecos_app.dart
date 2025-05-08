@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,6 +10,7 @@ import 'package:ecos/clients/clients.dart';
 import 'package:ecos/router/router.dart';
 
 import 'package:ecos/features/auth/auth.dart';
+import 'package:ecos/features/home/home.dart';
 import 'package:ecos/features/profile/profile.dart';
 import 'package:ecos/features/recycle/recycle.dart';
 
@@ -82,6 +83,13 @@ class _EcosAppState extends State<EcosApp> {
         BlocProvider<RecycleBloc>(
           create: (context) => RecycleBloc(
             wasteClient: _wasteClient,
+            logger: _talker,
+          ),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (context) => HomeBloc(
+            storage: _storage,
+            userClient: _userClient,
             logger: _talker,
           ),
         ),
